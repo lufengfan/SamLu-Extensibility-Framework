@@ -1,0 +1,4 @@
+LIBRARY PACKAGE001
+EXPORTS
+	GetContentIIDCount
+	GetContentIIDs

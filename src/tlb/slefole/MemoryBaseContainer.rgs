@@ -1,0 +1,26 @@
+HKCR
+{
+	slefole.1 = s 'MemoryBaseContainer Class'
+	{
+		CLSID = s '{3891DF57-238F-40DD-8F81-0B838F05491C}'
+	}
+	slefole = s 'MemoryBaseContainer Class'
+	{		
+		CurVer = s 'slefole.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3891DF57-238F-40DD-8F81-0B838F05491C} = s 'MemoryBaseContainer Class'
+		{
+			ProgID = s 'slefole.1'
+			VersionIndependentProgID = s 'slefole'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{9A60D56C-95C9-49BF-A8DE-874461178BCA}'
+			Version = s '1.0'
+		}
+	}
+}

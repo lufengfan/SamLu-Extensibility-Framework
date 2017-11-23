@@ -1,0 +1,131 @@
+// slefole.idl : slefole的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(slefole.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#pragma region slef
+interface IAnyBaseContainer;
+interface IEnumContents;
+#pragma endregion
+
+#pragma region slef::FileBase
+interface IFileBaseContainer;
+interface IFileBasePackage;
+#pragma endregion
+
+#pragma region slef::MemoryBase
+interface IMemoryBaseContainer;
+interface IMemoryBasePackage;
+#pragma endregion
+
+
+[
+	object,
+	uuid(EE354106-0DDC-43A6-A896-6FB3E5F53D72),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IAnyBaseContainer : IUnknown {
+	HRESULT Initialize();
+	HRESULT Dispose();
+	[propget] HRESULT Contents([out, retval] IEnumContents** pVal);
+};
+[
+	object,
+	uuid(EC5B84CE-352F-4911-BB1D-01E78A8A6EDA),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IEnumContents : IUnknown {
+	HRESULT Next(
+		[in] ULONG celt,
+		[in, size_is(celt), length_is(*pCeltFetched)] VARIANT * rgVar,
+		[out] ULONG * pCeltFetched
+	);
+	HRESULT Skip([in] ULONG celt);
+	HRESULT Reset();
+	HRESULT Clone([out] IEnumContents** ppenum);
+};
+
+
+[
+	object,
+	uuid(1296BFC3-4282-4D34-BF17-E4E564ED83D7),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IFileBaseContainer : IAnyBaseContainer {
+	[propget] HRESULT FileName([out, retval] BSTR* pVal);
+};
+[
+	object,
+	uuid(FA4126A8-12AC-4BB3-83B4-268C24C95C18),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IFileBasePackage : IUnknown {
+	HRESULT Initialize();
+	HRESULT Dispose();
+	[propget] HRESULT Contents([out, retval] IEnumContents** pVal);
+};
+
+
+
+[
+	object,
+	uuid(073F2B35-30F0-4535-BE0F-C7B445EDE803),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMemoryBaseContainer : IAnyBaseContainer{
+	HRESULT Deserialize([in] ULONG length, [in] byte* pData, [out, retval] IMemoryBasePackage** ppPackage);
+};
+[
+	object,
+	uuid(654EA1E0-CC7D-470B-AF1C-65E6B5F5FE2E),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMemoryBasePackage : IUnknown {
+	HRESULT Serialize([out] byte** ppData, [out] ULONG* pLength);
+};
+
+
+
+[
+	uuid(9A60D56C-95C9-49BF-A8DE-874461178BCA),
+	version(1.0),
+]
+library slefole
+{
+	importlib("stdole2.tlb");
+
+	interface IAnyBaseContainer;
+	interface IEnumContents;
+
+	interface IFileBaseContainer;
+	interface IFileBasePackage;
+
+	interface IMemoryBaseContainer;
+	interface IMemoryBasePackage;
+	[
+		uuid(3B8D212B-BD14-480B-9189-F9C1467854E5)		
+	]
+	coclass MemoryBasePackage
+	{
+		[default] interface IMemoryBasePackage;
+	};
+	[
+		uuid(3891DF57-238F-40DD-8F81-0B838F05491C)		
+	]
+	coclass MemoryBaseContainer
+	{
+		[default] interface IMemoryBaseContainer;
+	};
+};
+
+import "shobjidl.idl";
